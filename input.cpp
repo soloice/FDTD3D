@@ -306,27 +306,50 @@ void init()
     displs = new int[NUM_OF_PROCESS];
 
     rangex[0] = 0;
-    scounts[0] = (step_x + 2*order)*ny*nz;
     displs[0] = 0;
-
+    int jj =0;
+    for(i=1;i<NUM_OF_PROCESS;i++){
+    	if(i<=nx%NUM_OF_PROCESS){
+    		rangex[i] = rangex[i-1] + (nx/NUM_OF_PROCESS+1);
+    		scounts[i-1] = ((nx/NUM_OF_PROCESS+1) + 2*order)*ny*nz;
+    		displs[i] = (rangex[i])*ny*nz;
+    	}
+    	else{
+    		rangex[i] = rangex[i-1] + nx/NUM_OF_PROCESS;
+    		scounts[i-1] = ((nx/NUM_OF_PROCESS) + 2*order)*ny*nz;
+    		displs[i] = (rangex[i])*ny*nz;
+    	}
+    }
+    rangex[NUM_OF_PROCESS] = nx;
+    scounts[NUM_OF_PROCESS-1] = ((nx/NUM_OF_PROCESS) + 2*order)*ny*nz;
+    /*
     for (i=1; i<NUM_OF_PROCESS; i++){
         rangex[i] = rangex[i-1] + step_x;
         scounts[i] = (step_x + 2*order)*ny*nz;
         displs[i] = (rangex[i])*ny*nz;
+        if(rangex[i]>=nx){
+            rangex[i] = nx;
+            scounts[i] = 0;
+            displs[i] = nx*ny*nz -1;
+            if(jj == 0){
+                jj = 1;
+                scounts[i-1] = (nx - rangex[i-1] + 2*order)*ny*nz;
+            }
+        }
         //if(myRank==0)cout << "***Debug***: " << i<< " "<< displs[i] << " " << scounts[i] << " " << rangex[i] << " " << NUM_OF_PROCESS << " " << step_x << endl;
     }
 
     rangex[NUM_OF_PROCESS] = nx;
     //displs[NUM_OF_PROCESS-1] =  (nx- order)*ny*nz;
-    scounts[NUM_OF_PROCESS-1] = (nx - rangex[NUM_OF_PROCESS-1] + 2*order)*ny*nz;
-
+    if(jj == 0)scounts[NUM_OF_PROCESS-1] = (nx - rangex[NUM_OF_PROCESS-1] + 2*order)*ny*nz;
+*/
     if (nxPML<=rangex[myRank])	main_start = order;
     else if (nxPML>=rangex[myRank+1])	main_start=INF;
     else main_start = nxPML - rangex[myRank] + order;
 
     if (rangex[myRank+1] <= nx-nxPML) main_end = order+step_x;
     else if (rangex[myRank] >= nx-nxPML) main_end=-INF;
-    else if (myRank == NUM_OF_PROCESS-1) main_end = order + nx - rangex[NUM_OF_PROCESS-1] -(rangex[myRank+1] - (nx-nxPML));
+    //else if (myRank == NUM_OF_PROCESS-1) main_end = order + nx - rangex[NUM_OF_PROCESS-1] -(rangex[myRank+1] - (nx-nxPML));
     else main_end = order + step_x - (rangex[myRank+1] - (nx-nxPML));
 
     //cout << "####################Stat & End: " << main_start<<" "<< main_end << endl;

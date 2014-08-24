@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 	t1 = MPI_Wtime();
 
     getParameters();
-
+/*
     if (nx % NUM_OF_PROCESS == 0){
         nxSize = nx/NUM_OF_PROCESS+2*order;
         step_x = nx/NUM_OF_PROCESS;
@@ -76,6 +76,15 @@ int main(int argc, char *argv[])
         if(myRank == 0) printf("Wanning: Can't be divided even!\n");
         nxSize = nx/NUM_OF_PROCESS+2*order + 1;
         step_x = nx/NUM_OF_PROCESS + 1;
+    }
+*/
+    if(myRank < nx%NUM_OF_PROCESS){
+        nxSize = nx/NUM_OF_PROCESS+2*order + 1;
+        step_x = nx/NUM_OF_PROCESS + 1;
+    }
+    else{
+        nxSize = nx/NUM_OF_PROCESS+2*order;
+        step_x = nx/NUM_OF_PROCESS;
     }
 
     init();
