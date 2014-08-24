@@ -1,0 +1,26 @@
+#dx dy dz dt
+4.000000e-02 4.000000e-02 4.000000e-02 8.000000e-11
+#nx ny nz nt
+190 185 170 951
+#nt of src
+951
+#output time step and space step of wavefield
+100000 10
+#output step of slice
+20
+#npml x y z
+12 12 12
+#pml m kapxmax kapymax kapzmax alpha
+4 5 5 5 0.0
+#location of src
+src.in
+#location of rec
+rec.in
+#epsilon file
+eps.in
+#mu file
+mu.in
+#sigma file
+sig.in
+#slices file
+slice.in
