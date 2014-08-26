@@ -6,4 +6,6 @@ Author:
 Chong Ruan: OpenMP & MPI parallelization, inter-process communication.
 Weiqiang Zhu: serial program implementaion, generating test data and result visualization.
 
+We recommand you to run this code on a Linux cluster(or a single PC) with MPI environment.
+
 Feel free to report any bugs to ruanchong_ruby@163.com.  We wish you a good luck!
