@@ -58,9 +58,9 @@ def discretization():
     print "dx dy dz: ",dx,dy,dz;
     
     # nx = int(ceil(X/dx)); ny = int(ceil(Y/dy)); nz = int(ceil(Z/dz));
-    nx = 190
-    ny = 185
-    nz = 170
+    nx = 99
+    ny = 85
+    nz = 70
     print "nx ny nz: ",nx,ny,nz;
 
     
@@ -70,7 +70,7 @@ def discretization():
 
     
     # nt = findnt(epmax,mumax,dt,Z)
-    nt = 951
+    nt = 651
 
     srcpulse = blackharrispulse(fmax,dt,nt)
 

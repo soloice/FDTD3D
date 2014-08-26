@@ -292,6 +292,9 @@ void init_psi()
     }
     if (pml_end==-1)        // the last process
         pml_end = dum;
+    //if (myRank == NUM_OF_PROCESS-1 ) pml_start = pml_start -10;
+
+    cout << myRank << " PML: " << pml_start << " " << pml_end << endl; 
 }
 
 void init()
@@ -307,96 +310,38 @@ void init()
 
     rangex[0] = 0;
     displs[0] = 0;
-    int jj =0;
+
     for(i=1;i<NUM_OF_PROCESS;i++){
-    	if(i<=nx%NUM_OF_PROCESS){
-    		rangex[i] = rangex[i-1] + (nx/NUM_OF_PROCESS+1);
-    		scounts[i-1] = ((nx/NUM_OF_PROCESS+1) + 2*order)*ny*nz;
-    		displs[i] = (rangex[i])*ny*nz;
-    	}
-    	else{
-    		rangex[i] = rangex[i-1] + nx/NUM_OF_PROCESS;
-    		scounts[i-1] = ((nx/NUM_OF_PROCESS) + 2*order)*ny*nz;
-    		displs[i] = (rangex[i])*ny*nz;
-    	}
+        if(i<=nx%NUM_OF_PROCESS){
+            rangex[i] = rangex[i-1] + (nx/NUM_OF_PROCESS+1);
+            scounts[i-1] = ((nx/NUM_OF_PROCESS+1) + 2*order)*ny*nz;
+            displs[i] = (rangex[i])*ny*nz;
+        }
+        else{
+            rangex[i] = rangex[i-1] + nx/NUM_OF_PROCESS;
+            scounts[i-1] = ((nx/NUM_OF_PROCESS) + 2*order)*ny*nz;
+            displs[i] = (rangex[i])*ny*nz;
+        }
     }
     rangex[NUM_OF_PROCESS] = nx;
     scounts[NUM_OF_PROCESS-1] = ((nx/NUM_OF_PROCESS) + 2*order)*ny*nz;
-    /*
-    for (i=1; i<NUM_OF_PROCESS; i++){
-        rangex[i] = rangex[i-1] + step_x;
-        scounts[i] = (step_x + 2*order)*ny*nz;
-        displs[i] = (rangex[i])*ny*nz;
-        if(rangex[i]>=nx){
-            rangex[i] = nx;
-            scounts[i] = 0;
-            displs[i] = nx*ny*nz -1;
-            if(jj == 0){
-                jj = 1;
-                scounts[i-1] = (nx - rangex[i-1] + 2*order)*ny*nz;
-            }
-        }
-        //if(myRank==0)cout << "***Debug***: " << i<< " "<< displs[i] << " " << scounts[i] << " " << rangex[i] << " " << NUM_OF_PROCESS << " " << step_x << endl;
-    }
 
-    rangex[NUM_OF_PROCESS] = nx;
-    //displs[NUM_OF_PROCESS-1] =  (nx- order)*ny*nz;
-    if(jj == 0)scounts[NUM_OF_PROCESS-1] = (nx - rangex[NUM_OF_PROCESS-1] + 2*order)*ny*nz;
-*/
+    step_x = rangex[myRank+1] - rangex[myRank];
+    nxSize = step_x+2*order;
+    //if(myRank==NUM_OF_PROCESS-1) step_x = step_x +1;
+
+
     if (nxPML<=rangex[myRank])	main_start = order;
     else if (nxPML>=rangex[myRank+1])	main_start=INF;
     else main_start = nxPML - rangex[myRank] + order;
 
     if (rangex[myRank+1] <= nx-nxPML) main_end = order+step_x;
     else if (rangex[myRank] >= nx-nxPML) main_end=-INF;
-    //else if (myRank == NUM_OF_PROCESS-1) main_end = order + nx - rangex[NUM_OF_PROCESS-1] -(rangex[myRank+1] - (nx-nxPML));
     else main_end = order + step_x - (rangex[myRank+1] - (nx-nxPML));
 
-    //cout << "####################Stat & End: " << main_start<<" "<< main_end << endl;
-    /*
-    if(rangex[myRank] > (nxPML-1))&& rangex[myRank+1] < nx-nxPML){
-        main_start = order;
-        main_end = order+step_x;
-    }
-    else if(rangex[myRank] <= (nxPML-1) && rangex[myRank+1] < nx-nxPML){
-            main_start = order + nxPML-1 - rangex[myRank];
-            main_end = order + step_x;
 
-    }
-    else if(rangex[myRank] > (nxPML-1) && rangex[myRank+1] >= nx-nxPML){
-            main_start = order;
-            if(myRank == NUM_OF_PROCESS-1)
-                main_end = nx - rangex[NUM_OF_PROCESS-1] + order - (rangex[myRank+1] - (nx-nxPML));
-            else
-                main_end = order + step_x - (rangex[myRank+1] - (nx-nxPML));
-
-    }
-    else if(rangex[myRank] <= (nxPML-1) && rangex[myRank+1] >= nx-nxPML){
-            main_start = order + nxPML-1 - rangex[myRank];
-            if(myRank == NUM_OF_PROCESS-1)
-                main_end = nx - rangex[NUM_OF_PROCESS-1] + order - (rangex[myRank+1] - (nx-nxPML));
-            else
-                main_end = order + step_x - (rangex[myRank+1] - (nx-nxPML));
-    }
-    else{
-        cout << "Erorr in main_stat and main_end!";
-    }
-
-
-    main_start = myRank==0 ? order+nxPML : order;
-    //main_end = myRank==NUM_OF_PROCESS-1 ? order+step_x-nxPML : order+step_x;
-    main_end = myRank==NUM_OF_PROCESS-1 ? (nx - rangex[NUM_OF_PROCESS-1]) + order - nxPML : order+step_x;
-    */
-
-    //if (myRank == 0) cout << "###################rangex: " << rangex[NUM_OF_PROCESS-1] << \
-        " rangex: " <<  rangex[NUM_OF_PROCESS] << " nx: " << nx << endl;
-    //cout << "###### myRank: " << myRank << " main_start: " << main_start << endl;
-    //cout << "###### myRank: " << myRank << " main_end: " << main_end << endl;
-
-
-    if (myRank==0)
-        for (i=0; i<=NUM_OF_PROCESS; i++)
-            printf("step_x = %d, rangex[%d] = %d\n", step_x, i, rangex[i]);
+    printf("******:%d step_x = %d, rangex[%d] = %d, main_start=%d, main_end=%d scounts[%d]=%d\n", \
+        myRank,step_x, myRank, rangex[myRank],main_start,main_end,myRank,scounts[myRank]/ny/nz);
 
 
     nxprop = 2*nx-1;
@@ -419,7 +364,7 @@ void init()
         for ( j=0; j<ny; j++)
             for ( k=0; k<nz; k++)
             {
-                eps(i,j,k) = 1.0 * eps0;
+                eps(i,j,k) = 9.0 * eps0;
                 mu(i,j,k) = mu0;
                 sig(i,j,k) = 0.0;
             }

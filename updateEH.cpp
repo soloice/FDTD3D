@@ -92,10 +92,18 @@ void updateH_PML()
     //#pragma omp parallel for num_threads(NUM_OF_THREADS) private(i,j,k,CQ,mu_halfx,mu_halfy,mu_halfz,\
      Eydiffz,Ezdiffy,Exdiffz,Ezdiffx,Eydiffx,Exdiffy,Bx,By,Bz,Ax,Ay,Az,sigx,sigy,sigz,kapx,kapy,kapz,iratio,sigxmax,sigymax,sigzmax)
 
+    FILE *fp;
+    char filename[30];
+    char dir[MAX_NAME_LEN] = "./debug/";
+    sprintf(filename, "%03d_debug_HPML_%02d_%02d.dat", it,myRank, NUM_OF_PROCESS);
+    fp=fopen(strcat(dir, filename), "w+");
+
     for (ii=pml_start; ii<pml_end; ii++)
     {
         i = psi_H[ii].x; j = psi_H[ii].y; k = psi_H[ii].z;
-        int i0 = i % step_x + order;
+        
+        int i0 = i - rangex[myRank] + order;
+        //int i0 = i % step_x + order;
         sigxmax = (m+1) / (150 * pi * sqrt(eps(i0,j,k)/eps0) * dx);
         sigymax = (m+1) / (150 * pi * sqrt(eps(i0,j,k)/eps0) * dy);
         sigzmax = (m+1) / (150 * pi * sqrt(eps(i0,j,k)/eps0) * dz);
@@ -133,7 +141,7 @@ void updateH_PML()
         else{
             sigz = 0.0;
             kapz = 1.0;}
-
+        
         if ( j >= 2 && k >= 2 && i <= nx-3 && j <= ny-3 && k <= nz-3 ){
         mu_halfx = (mu(i0,j,k) + mu(i0+1,j,k))/2;
         CQ = dt/mu_halfx;
@@ -149,6 +157,7 @@ void updateH_PML()
         psi_H[ii].psi_Hxy = By*psi_H[ii].psi_Hxy + Ay*Ezdiffy;
         Hx(i0,j,k) = Hx(i0,j,k) - CQ*psi_H[ii].psi_Hxy + CQ*psi_H[ii].psi_Hxz;
         }
+        
         if ( i >=2 && k >=2 && i <= nx-3 && j <= ny-3 && k <= nz-3){
         mu_halfy = (mu(i0,j,k) + mu(i0,j+1,k))/2;
         CQ = dt/mu_halfy;
@@ -164,6 +173,7 @@ void updateH_PML()
         psi_H[ii].psi_Hyx = Bx*psi_H[ii].psi_Hyx + Ax*Ezdiffx;
         Hy(i0,j,k) = Hy(i0,j,k) - CQ*psi_H[ii].psi_Hyz + CQ*psi_H[ii].psi_Hyx;
         }
+        
         if ( i>= 2 && j>=2 && i <= nx-3 && j <= ny-3 && k <= nz-3){
         mu_halfz = (mu(i0,j,k) + mu(i0,j,k+1))/2;
         CQ = dt/mu_halfz;
@@ -179,7 +189,13 @@ void updateH_PML()
         psi_H[ii].psi_Hzy = By*psi_H[ii].psi_Hzy + Ay*Exdiffy;
         Hz(i0,j,k) = Hz(i0,j,k) - CQ*psi_H[ii].psi_Hzx + CQ*psi_H[ii].psi_Hzy;
         }
+        // if(it == 1&& k==30 &&j==5)fprintf(fp, "%d %d %d %d Bx:%f By:%f Bz:%f Ax:%f Ay:%f Az:%f\n",ii,i,j,k,\
+            Bx,By,Bz,Ax,Ay,Az);
+        //if(it == 1&&(i==48||i==49||i==51||i==50))fprintf(fp, "%d %d %d %d Bx:%e dt:%e sigx:%e kapx:%e alpha:%e\n",ii,i,j,k,\
+        //    Bx,dt,sigx,kapx,alpha);
+        if(k==30 &&j==12)fprintf(fp, "%d %d %d %d Ex:%lf Ey:%lf Ez:%lf\n",ii,i,j,k,Ex,Ey,Ez);
     }
+    fclose(fp);
 }
 
 void updateE_PML()
@@ -187,12 +203,19 @@ void updateE_PML()
     //#pragma omp parallel for num_threads(NUM_OF_THREADS) private(i,j,k,CA,CB,sig_halfyz,eps_halfyz,sig_halfxz,eps_halfxz,sig_halfxy,eps_halfxy,\
      Hzdiffy,Hydiffz,Hxdiffz,Hzdiffx,Hydiffx,Hxdiffy,DE,Bx,By,Bz,Ax,Ay,Az,sigx,sigy,sigz,kapx,kapy,kapz,iratio,sigxmax,sigymax,sigzmax)
 
+
+    FILE *fp;
+    char filename[30];
+    char dir[MAX_NAME_LEN] = "./debug/";
+    sprintf(filename, "%03d_debug_EPML_%02d_%02d.dat",it,myRank, NUM_OF_PROCESS);
+    fp=fopen(strcat(dir, filename), "w+");
+
     for (ii=pml_start; ii<pml_end; ii++)
     {
         i = psi_E[ii].x; j = psi_E[ii].y; k = psi_E[ii].z;
 
-        int i0 = i % step_x + order;
-
+        //int i0 = i % step_x + order;
+        int i0 = i - rangex[myRank] + order;
         sigxmax = (m+1) / (150 * pi * sqrt(eps(i0,j,k)/eps0) * dx);
         sigymax = (m+1) / (150 * pi * sqrt(eps(i0,j,k)/eps0) * dy);
         sigzmax = (m+1) / (150 * pi * sqrt(eps(i0,j,k)/eps0) * dz);
@@ -292,8 +315,12 @@ void updateE_PML()
         Ez(i0,j,k) = Ez(i0,j,k) + DE*psi_E[ii].psi_Ezx - DE*psi_E[ii].psi_Ezy;
 
         }
+        // if(it == 1&& k==30 &&j==5)fprintf(fp, "%d %d %d %d Bx:%f By:%f Bz:%f Ax:%f Ay:%f Az:%f\n",ii,i,j,k,\
+        // Bx,By,Bz,Ax,Ay,Az);
+        if(k==30 &&j==12)fprintf(fp, "%d %d %d %d Ex:%lf Ey:%lf Ez:%lf\n",ii,i,j,k,Ex,Ey,Ez);
     }
-
+    
+    fclose(fp);
 }
 
 

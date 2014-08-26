@@ -117,9 +117,35 @@ def view_gather():
     savefig('gather.png')
 
 
+def check():
+
+    data1 = loadtxt("ySlice00014_2.dat")
+    # data2 = loadtxt("ySlice00014_3.dat")
 
 
+    slice1 = reshape(data1,(slice_ny,nx,nz))
+    # slice2 = reshape(data2,(slice_ny,nx,nz))
+    # slice_diff = slice1 - slice2;
+    # zslice = reshape(zdata,(slice_nz,nx,ny))
+    # data = reshape(data,(126,101))
+    figure()
+    imshow(slice1[0])
+    colorbar()
+    # # savefig(re.findall("^\w+",xname)[0]+".jpg")
+    # figure()
+    # imshow(slice2[0])
+    # colorbar()
+    # # savefig(re.findall("^\w+",yname)[0]+".jpg")
+    # figure()
+    # imshow(slice_diff[0])
+    # colorbar()
+    show()
+    # imshow()
+    # savefig(re.findall("^\w+",zname)[0]+".jpg")
 
+# read_par()
+# os.chdir("./Output/")
+# check()
 
 
         

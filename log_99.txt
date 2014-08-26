@@ -1,0 +1,90 @@
+localhost.localdomain: Hello world from process 0 of 2
+localhost.localdomain: Hello world from process 1 of 2
+src.in
+rec.in
+eps.in
+mu.in
+sig.in
+call init###### myRank: 
+1 main_start: 2
+0Test rangex: 0
+0Test scounts: 54
+0Test displs: 0
+1###### myRank: 1 main_end: 39
+Test rangex: 50
+1Test scounts: 53
+1Test displs: 50
+###### myRank: 0 main_start: 14
+###### myRank: 0 main_end: 52
+step_x = 50, rangex[0] = 0
+step_x = 50, rangex[1] = 50
+step_x = 50, rangex[2] = 99
+0 PML: 0 190872
+call init end
+call read source
+1 PML: 190872 378600
+call read source end
+call read recv
+call read recv end
+call read slice
+call read sig
+call read eps
+call read mu
+Iteration 0, time: 0.117219
+Iteration 1, time: 0.11703
+Iteration 2, time: 0.118577
+Iteration 3, time: 0.117582
+Iteration 4, time: 0.11673
+Iteration 5, time: 0.123972
+Iteration 6, time: 0.116919
+Iteration 7, time: 0.117376
+Iteration 8, time: 0.121957
+Iteration 9, time: 0.122868
+Iteration 10, time: 0.122327
+Iteration 11, time: 0.123804
+Iteration 12, time: 0.123291
+Iteration 13, time: 0.123587
+Iteration 14, time: 0.126768
+Iteration 15, time: 0.122967
+Iteration 16, time: 0.124644
+Iteration 17, time: 0.122772
+Iteration 18, time: 0.121624
+Iteration 19, time: 0.124314
+Iteration 20, time: 0.123232
+Iteration 21, time: 0.122948
+Iteration 22, time: 0.123453
+Iteration 23, time: 0.127959
+Iteration 24, time: 0.126399
+Iteration 25, time: 0.1232
+Iteration 26, time: 0.123449
+Iteration 27, time: 0.12492
+Iteration 28, time: 0.12436
+Iteration 29, time: 0.125192
+Iteration 30, time: 0.124943
+Iteration 31, time: 0.124235
+Iteration 32, time: 0.12187
+Iteration 33, time: 0.12474
+Iteration 34, time: 0.123429
+Iteration 35, time: 0.117939
+Iteration 36, time: 0.117874
+Iteration 37, time: 0.118219
+Iteration 38, time: 0.118093
+Iteration 39, time: 0.118099
+Iteration 40, time: 0.123161
+Iteration 41, time: 0.123069
+Iteration 42, time: 0.123849
+Iteration 43, time: 0.123193
+Iteration 44, time: 0.124198
+Iteration 45, time: 0.124485
+Iteration 46, time: 0.123
+Iteration 47, time: 0.124361
+Iteration 48, time: 0.127212
+Iteration 49, time: 0.11904
+Iteration 50, time: 0.118642
+Iteration 51, time: 0.119935
+Iteration 52, time: 0.118163
+Iteration 53, time: 0.117832
+Iteration 54, time: 0.117989
+Iteration 55, time: 0.118113
+[mpiexec@localhost.localdomain] Sending Ctrl-C to processes as requested
+[mpiexec@localhost.localdomain] Press Ctrl-C again to force abort

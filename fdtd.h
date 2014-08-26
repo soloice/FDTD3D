@@ -48,7 +48,7 @@ extern int nxSize,step_x;
 extern int nt, nt_of_src;
 extern int output_step_t_of_wavefield, output_step_x_of_wavefield, output_step_of_slice;
 extern int nxPML, nyPML, nzPML;
-extern int i, j, k, ii;//, it;
+extern int i, j, k, ii, it;
 extern int m, kapxmax, kapymax, kapzmax;
 extern double alpha;
 extern int nsrc, nrec;

@@ -68,16 +68,6 @@ int main(int argc, char *argv[])
 
     getParameters();
 /*
-    if (nx % NUM_OF_PROCESS == 0){
-        nxSize = nx/NUM_OF_PROCESS+2*order;
-        step_x = nx/NUM_OF_PROCESS;
-    }
-    else {
-        if(myRank == 0) printf("Wanning: Can't be divided even!\n");
-        nxSize = nx/NUM_OF_PROCESS+2*order + 1;
-        step_x = nx/NUM_OF_PROCESS + 1;
-    }
-*/
     if(myRank < nx%NUM_OF_PROCESS){
         nxSize = nx/NUM_OF_PROCESS+2*order + 1;
         step_x = nx/NUM_OF_PROCESS + 1;
@@ -86,7 +76,7 @@ int main(int argc, char *argv[])
         nxSize = nx/NUM_OF_PROCESS+2*order;
         step_x = nx/NUM_OF_PROCESS;
     }
-
+*/
     init();
     readSource();
 
@@ -195,7 +185,7 @@ void add_source(){
         i = src[ mysrc[ii] ].x;
         j = src[ mysrc[ii] ].y;
         k = src[ mysrc[ii] ].z;
-        int i0 = i % step_x + order;
+        int i0 = i - rangex[myRank] + order;
         src[mysrc[ii]].component(i0,j,k) = src[mysrc[ii]].component(i0,j,k) + src_pulse(ii,it);
 
         //cout << "src_pulse: " << ii <<" "<< it <<" "<< src_pulse(ii,it) << endl;
@@ -212,7 +202,7 @@ void record_gather(){
         i = rec[ myrec[ii] ].x;
         j = rec[ myrec[ii] ].y;
         k = rec[ myrec[ii] ].z;
-        int i0 = i % step_x + order;
+        int i0 = i - rangex[myRank] + order;
         gather(ii,it) = rec[myrec[ii]].component(i0,j,k);
 
     }

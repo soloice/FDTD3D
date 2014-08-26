@@ -1,9 +1,9 @@
 #dx dy dz dt
 4.000000e-02 4.000000e-02 4.000000e-02 8.000000e-11
 #nx ny nz nt
-190 185 170 951
+99 85 70 651
 #nt of src
-951
+651
 #output time step and space step of wavefield
 100000 10
 #output step of slice
