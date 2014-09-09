@@ -2,10 +2,20 @@ FDTD(Finite-difference time-domain) method is a numerical analysis technique use
 
 Our code turns to have a good scalability.  Experiments show that we achieves an 6X speedup on a cluster consisting of 8 computing nodes.
 
+
 Author: 
 Chong Ruan: OpenMP & MPI parallelization, inter-process communication.
 Weiqiang Zhu: serial program implementaion, generating test data and result visualization.
 
+
 We recommand you to run this code on a Linux cluster(or a single PC) with MPI environment.
+
+
+Hint:
+	*All .cpp files are main routines
+	*All .in files are input data
+	*All .dat files are output data
+	*All .m or .py files are used for debug and data visualization.
+
 
 Feel free to report any bugs to ruanchong_ruby@163.com.  We wish you a good luck!
