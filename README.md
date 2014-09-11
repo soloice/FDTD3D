@@ -6,15 +6,15 @@ Our code turns to have a good scalability.  Experiments show that we achieves an
 
 We recommand you to run this code on a Linux cluster(or a single PC) with MPI environment.
 
-**Author: **
+**Author:**
 - Chong Ruan: OpenMP & MPI parallelization, inter-process communication.
 - Weiqiang Zhu: serial program implementaion, generating test data and result visualization.
 
-Hint:
+**Hint:**
 - All .cpp files are main routines
 - All .in files are input data
 - All .dat files are output data
-- *All .m or .py files are used for debug and data visualization.
+- All .m or .py files are used for debug and data visualization
 
 
 Feel free to report any bugs to ruanchong_ruby@163.com.  We wish you a good luck!
